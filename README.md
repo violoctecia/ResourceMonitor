@@ -37,14 +37,22 @@
 - macOS 13.0+ (нужен для автозапуска через `SMAppService`)
 - Docker — опционально, если не установлен, соответствующая секция просто покажет "не найден"
 
-## Сборка
+## Установка
 
-Никакого Xcode-проекта, чистый `swiftc`:
+**Вариант 1 — готовый билд (проще всего):**
+
+1. Скачай `ResourceMonitor.zip` со страницы [Releases](../../releases/latest)
+2. Разархивируй и перетащи `ResourceMonitor.app` в `/Applications`
+3. Запусти **правым кликом → Открыть** (а не двойным кликом) — приложение не подписано Apple Developer сертификатом, поэтому при первом запуске macOS покажет предупреждение "не удалось проверить разработчика". Правый клик → Открыть → подтвердить в диалоге — дальше запускается как обычно
+
+**Вариант 2 — собрать из исходников** (нужен только Xcode Command Line Tools, полноценный Xcode не требуется):
 
 ```bash
+git clone https://github.com/violoctecia/ResourceMonitor.git
+cd ResourceMonitor
 swiftc -O -o ResourceMonitor.app/Contents/MacOS/ResourceMonitor main.swift -framework Cocoa -framework ServiceManagement
 cp Info.plist ResourceMonitor.app/Contents/Info.plist
 codesign --force --deep --sign - ResourceMonitor.app
+cp -R ResourceMonitor.app /Applications/
+open /Applications/ResourceMonitor.app
 ```
-
-Собранный `ResourceMonitor.app` можно просто скопировать в `/Applications` и запустить.

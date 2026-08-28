@@ -37,14 +37,22 @@ Each row is color-coded by resource usage:
 - macOS 13.0+ (needed for launch-at-login via `SMAppService`)
 - Docker — optional; if it's not installed, that section just shows "not found"
 
-## Building
+## Installation
 
-No Xcode project, plain `swiftc`:
+**Option 1 — prebuilt app (easiest):**
+
+1. Download `ResourceMonitor.zip` from the [Releases](../../releases/latest) page
+2. Unzip and drag `ResourceMonitor.app` into `/Applications`
+3. Launch with **right-click → Open** (not a regular double-click) — the app isn't signed with an Apple Developer certificate, so macOS will warn "cannot verify the developer" on first launch. Right-click → Open → confirm in the dialog, and it runs normally after that
+
+**Option 2 — build from source** (only needs Xcode Command Line Tools, not the full Xcode app):
 
 ```bash
+git clone https://github.com/violoctecia/ResourceMonitor.git
+cd ResourceMonitor
 swiftc -O -o ResourceMonitor.app/Contents/MacOS/ResourceMonitor main.swift -framework Cocoa -framework ServiceManagement
 cp Info.plist ResourceMonitor.app/Contents/Info.plist
 codesign --force --deep --sign - ResourceMonitor.app
+cp -R ResourceMonitor.app /Applications/
+open /Applications/ResourceMonitor.app
 ```
-
-The built `ResourceMonitor.app` can just be copied to `/Applications` and launched.
